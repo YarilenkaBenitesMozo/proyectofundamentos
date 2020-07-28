@@ -1,0 +1,590 @@
+<?xml version="1.0"?>
+
+<robot name="robot">
+
+  <!-- Color of materials -->
+  <material name="yellow">
+    <color rgba="1 1 0 1"/>
+  </material>
+  <material name="blue">
+    <color rgba="0 0 1 1"/>
+  </material>
+  <material name="red">
+    <color rgba="1 0 0 1"/>
+  </material>
+
+  <material name="pazul">
+    <color rgba="1 1 1 1"/>
+  </material>
+
+
+<!-- REF -->
+  <link name="ref">
+    <visual>
+      <geometry>
+        <cylinder length="0.01" radius="0.4"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 -0.01001"/>
+      <material name="yellow" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 -0.01001" />
+      <geometry>
+        <cylinder length="0.01" radius="0.4"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="ref">
+    <material>Gazebo/White</material>
+  </gazebo>
+<!-- JOINT F1 -->
+  <joint name="jointF1" type="fixed">
+    <parent link="ref"/>
+    <child link="base"/>
+    <origin xyz="0 0 0"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="0.1" lower="-3.1" upper="3.1"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+
+<!-- BASE -->
+ <link name="base">
+    <visual>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/BASE.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="1.57 0 0" xyz="0 0 0"/>
+      <material name="pazul" />
+    </visual>
+    <collision>
+      <origin rpy="1.57 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/BASE.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="base">
+    <material>Gazebo/White</material>
+  </gazebo>
+
+<!-- JOINT 2F -->
+  <joint name="joint_2F" type="fixed">
+    <parent link="base"/>
+    <child link="cuerpoD1A"/>
+    <origin xyz="0 0 0.75" rpy="0 0 0" />
+    <axis xyz="0 0 1"  />
+    <limit effort="300" velocity="0.1" lower="-0.85" upper="0.85"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+
+<!-- LINK 1A -->
+   <link name="cuerpoD1A">
+    <visual>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/D001.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 1.57 0" xyz="0 -0.06 0"/>
+      <material name="pazul" />
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 -0.06 0"/>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/D001.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="cuerpoD1A">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+<!-- BRAZO DERECHO -->
+<!-- JOINT_1D -->
+  <joint name="joint_1D" type="fixed">
+    <parent link="cuerpoD1A"/>
+    <child link="cuerpoD1B"/>
+    <origin xyz="0 0 0" rpy="1.57 0 0" />
+    <axis xyz="0 0 1"  />
+    <limit effort="300" velocity="0.1" lower="-3.1415" upper="3.1415"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+  
+<!-- LINK 1B -->
+   <link name="cuerpoD1B">
+    <visual>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/DREP.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="1.57 0 0" xyz="0  0 0.19"/>
+      <material name="blue" />
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/DREP.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="cuerpoD1B">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+
+<!-- JOINT_2D -->
+  <joint name="joint_2D" type="fixed">
+    <parent link="cuerpoD1B"/>
+    <child link="cuerpoD2A"/>
+    <origin xyz="0 0 0.25" rpy="1.57 0 1.57" />
+    <axis xyz="0 0 1"  />
+    <limit effort="300" velocity="0.1" lower="-3.1415" upper="3.1415"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+  
+<!-- LINK 2A -->
+   <link name="cuerpoD2A">
+    <visual>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/D002.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="1.57 1.57 0" xyz="-0.06 0 0"/>
+      <material name="pazul" />
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 -0.06"/>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/D002.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="cuerpoD2A">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+
+
+<!-- JOINT_3D -->
+  <joint name="joint_3D" type="fixed">
+    <parent link="cuerpoD2A"/>
+    <child link="cuerpoD2B"/>
+    <origin xyz="0 0 0" rpy="1.57 0 -1.57" />
+    <axis xyz="0 0 1"  />
+    <limit effort="300" velocity="0.1" lower="-3.1415" upper="3.1415"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+  
+<!-- LINK2B -->
+   <link name="cuerpoD2B">
+    <visual>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/DREP.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="1.57 0 0" xyz="0 0 0.260"/>
+      <material name="blue" />
+    </visual>
+    <collision>
+      <origin rpy=" 0 0 0" xyz="0 0 -0.260"/>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/DREP.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="cuerpoD2B">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+
+<!-- JOINT_4D -->
+  <joint name="joint_4D" type="fixed">
+    <parent link="cuerpoD2B"/>
+    <child link="cuerpoD3A"/>
+    <origin xyz="0 0 0.320" rpy="1.57 0 -1.57" />
+    <axis xyz="0 0 1"  />
+    <limit effort="300" velocity="0.1" lower="-3.1415" upper="3.1415"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+  
+<!-- LINK 3A -->
+   <link name="cuerpoD3A">
+    <visual>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/D003.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 -1.57  -1.57 " xyz="-0.060 0 0"/>
+      <material name="pazul" />
+    </visual>
+    <collision>
+      <origin rpy=" 0 0 1.57" xyz="0.06 0 0"/>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/D003.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="cuerpoD3A">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+<!-- JOINT_5D -->
+  <joint name="joint_5D" type="fixed">
+    <parent link="cuerpoD3A"/>
+    <child link="cuerpoD3B"/>
+    <origin xyz="0 0 0" rpy="1.57 0 -1.57" />
+    <axis xyz="0 0 1"  />
+    <limit effort="300" velocity="0.1" lower="-3.1415" upper="3.1415"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+  
+<!-- LINK 3B -->
+   <link name="cuerpoD3B">
+    <visual>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/DREP.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="1.57 0 1.57" xyz="0 0 0.260"/>
+      <material name="blue" />
+    </visual>
+    <collision>
+      <origin rpy=" 0 0 -1.57" xyz="0.260 0 0"/>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/DREP.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="cuerpoD3B">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+
+
+<!-- JOINT_6D -->
+  <joint name="joint_6D" type="fixed">
+    <parent link="cuerpoD3B"/>
+    <child link="cuerpoD4A"/>
+    <origin xyz="0 0 0.320" rpy="1.57 0 3.14159" />
+    <axis xyz="0 0 1"  />
+    <limit effort="300" velocity="0.1" lower="-3.1415" upper="3.1415"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+  
+<!-- LINK 4A -->
+   <link name="cuerpoD4A">
+    <visual>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/D004.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <origin rpy="3.14159 1.57 0" xyz="0 0.06 0"/>
+      <material name="pazul" />
+    </visual>
+    <collision>
+      <origin rpy=" 0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/D004.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="cuerpoD4A">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+
+<!-- JOINT_3FF -->
+  <joint name="joint_3F" type="fixed">
+    <parent link="cuerpoD4A"/>
+    <child link="cuerpoD4B"/>
+    <origin xyz="0 0 0" rpy="0 0 0 " />
+    <axis xyz="0 0 1"  />
+    <limit effort="300" velocity="0.1" lower="-0.85" upper="0.85"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+  
+<!-- LINK 4B -->
+   <link name="cuerpoD4B">
+    <visual>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/GARRA001.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0  0 0" xyz="0 0.07 0"/>
+      <material name="red" />
+    </visual>
+    <collision>
+      <origin rpy=" 0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/GARRA001.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="cuerpoD4B">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+<!-- JOINT_GRIP -->
+  <joint name="joint_grip" type="fixed">
+    <parent link="cuerpoD4B"/>
+    <child link="cuerpoDGRIP"/>
+    <origin xyz="0 0.11 0" rpy="1.57 0 1.57" />
+    <axis xyz="0 0 1"  />
+    <limit effort="300" velocity="0.1" lower="-0.85" upper="0.85"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+  
+<!-- LINK grip -->
+   <link name="cuerpoDGRIP">
+    <visual>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/GARRA002.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0  1.57 -1.57" xyz="-0.01 0 0"/>
+      <material name="blue" />
+    </visual>
+    <collision>
+      <origin rpy=" 0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/GARRA002.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="cuerpoDGRIP">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+<!-- PARTE IZQUIERDA*************************************************************-->
+
+
+<!-- JOINT F3 -->
+  <joint name="jointF3" type="fixed">
+    <parent link="base"/>
+    <child link="cuerpo_1IZ"/>
+    <origin xyz="0 0 0.420 "/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="0.1" lower="-0.85" upper="0.85"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+
+<!-- LINK 1IZA -->
+   <link name="cuerpo_1IZ">
+    <visual>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/IZ001.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 -1.57" xyz="0 0.185 0"/>
+      <material name="blue" />
+    </visual>
+    <collision>
+      <origin rpy="0 0 -1.57" xyz="0 0.185 0"/>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/IZ001.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="cuerpo_1IZ">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+
+
+
+
+<!--JOINT_1IZ-->
+  <joint name="joint_1I" type="revolute">
+    <parent link="cuerpo_1IZ"/>
+    <child link="cuerpo_2IZ"/>
+    <origin xyz="0 0.250 0 "/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="0.1" lower="-0.85" upper="0.85"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+
+<!-- LINK 2IZ -->
+   <link name="cuerpo_2IZ">
+    <visual>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/IZ002.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="1.57 0 0" xyz="0.255 0 0.060"/>
+      <material name="blue" />
+    </visual>
+    <collision>
+      <origin rpy="1.57 0 0" xyz="0.255 0 0.060"/>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/IZ002.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="cuerpo_2IZ">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+
+
+
+<!-- JOINT_2IZ -->
+  <joint name="joint_2I" type="revolute">
+    <parent link="cuerpo_2IZ"/>
+    <child link="cuerpo_3IZ"/>
+    <origin xyz="0.320 0 0.06"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="0.1" lower="-0.85" upper="0.85"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+
+<!-- LINK 3I -->
+   <link name="cuerpo_3IZ">
+    <visual>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/IZ003.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 -0.115 0"/>
+      <material name="blue" />
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/IZ003.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="cuerpo_3IZ">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+
+
+
+<!-- JOINT_3IZ-->
+  <joint name="joint_3I" type="prismatic">
+    <parent link="cuerpo_3IZ"/>
+    <child link="cuerpo_4IZ"/>
+    <origin xyz="0 -0.180 0 " rpy = "3.1415 0 -1.57"/>
+    <axis xyz="0 0 1" />
+    <limit effort="300" velocity="0.1" lower="0" upper="0.085"/>
+    <dynamics damping="50" friction="1"/>
+  </joint>
+
+<!-- LINK PRIS -->
+   <link name="cuerpo_4IZ">
+    <visual>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/IZ005.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin rpy="-1.570 0 0" xyz="0 0 -0.150"/>
+      <material name="red" />
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://proyecto/meshes/IZ005.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="1" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </link>
+  <gazebo reference="cuerpo_4IZ">
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+
+
+
+
+
+
+<!-- Transmissions -->
+  <!-- Transmissions -->
+  <transmission name="tran1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="joint1">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor1">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="tran2">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="joint2">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor2">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="tran3">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="joint3">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor3">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+   <!-- Plugin: ros_control -->
+   <gazebo>
+     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+       <robotNamespace>/robot</robotNamespace>
+       <legacyModeNS>true</legacyModeNS>
+     </plugin>
+   </gazebo>
+
+</robot>

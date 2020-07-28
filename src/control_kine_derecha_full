@@ -1,0 +1,124 @@
+#!/usr/bin/env python
+#
+
+from __future__ import print_function
+import rospy
+from sensor_msgs.msg import JointState
+
+from markers import *
+from funcion_derecha import *
+
+
+# Initialize the node
+rospy.init_node("testKineControlPose")
+print('starting motion ... ')
+# Publisher: publish to the joint_states topic
+pub = rospy.Publisher('joint_states', JointState, queue_size=1000)
+# Markers for the current and desired positions
+bmarker_current  = FrameMarker()
+bmarker_desired = FrameMarker(0.5)
+
+# Joint names
+jnames = ['joint_1D', 'joint_2D','joint_3D','joint_4D','joint_5D','joint_6D']
+
+# Desired pose
+##ang = pi/3
+##Rd = np.array([[0,1,0],[1,0,0],[0,0,-1]])
+##qd = rot2quat(Rd)
+# Find an xd that the robot can reach
+
+Tdes = fkine(np.array([0.85,0,0.28,0.2,-0.85,-0.93]))
+# Desired position
+xd = TF2xyzquat(Tdes)
+
+#xd = np.array([-0.4, -0.4, 0.4, qd[0], qd[1], qd[2], qd[3]])
+#xd  = np.array([0.5, 0.5, 0.6, np.cos(ang/2.0), 0, 0, np.sin(ang/2.0)])
+# Initial configuration
+q0  = np.array([0.01,0,0,0,0,0])
+
+# Resulting initial pose (end effector with respect to the base link)
+T = fkine(q0)
+x0 = TF2xyzquat(T)# x0 posicion y orientacion en cuaterniones
+
+# Markers for the current and the desired pose
+bmarker_current.setPose(x0)
+bmarker_desired.setPose(xd)
+
+# Instance of the JointState message
+jstate = JointState()
+# Values of the message
+jstate.header.stamp = rospy.Time.now()
+jstate.name = jnames
+# Add the head joint value (with value 0) to the joints
+jstate.position = q0
+
+# Frequency (in Hz) and control period 
+freq = 1000
+dt = 1.0/freq
+rate = rospy.Rate(freq)
+
+#Valor de la ganancia cinematica
+k = 0.66
+epsilon = 1+1e-4
+t=0
+
+
+# Initial joint configuration
+q = copy(q0)
+# Initialize the derror vector (derivative of the error)
+derror = np.zeros(7)
+# Main loop
+
+
+
+
+
+
+
+while not rospy.is_shutdown():
+    # Current time (needed for ROS)
+    jstate.header.stamp = rospy.Time.now()
+    # Kinematic control law for the pose (complete here)
+    # --------------------------------------------------
+    J=jacobian_pose(q)
+
+    T=fkine(q)
+    x=TF2xyzquat(T)
+
+    e= x[4:7]
+    ed= xd[4:7]
+    w= x[3]
+    wd= xd[3]
+    ## 
+    vw= wd*w+np.transpose(ed).dot(e)
+
+    ## 
+    ve= -wd*e + w*ed-np.cross(ed,e) 
+
+    fe=np.array([x[0]-xd[0],x[1]-xd[1],x[2]-xd[2],vw-1,ve[0],ve[1],ve[2]])
+
+    if (np.linalg.norm(fe)<epsilon):
+        break
+    print(np.linalg.norm(fe))
+    derror = -k*fe
+    dq= np.linalg.pinv(J).dot(derror)
+    
+    q= q+dt*dq
+    print(fe)
+
+    # Publish the message
+    for i in range(6):
+        if(q[i] >pi):
+            q[i]=pi
+        elif(q[i] < -pi):
+            q[i] >-pi
+
+
+    # Publish the message
+    jstate.position = q
+    pub.publish(jstate)
+    bmarker_desired.setPose(xd)
+    bmarker_current.setPose(x)
+    # Wait for the next iteration
+    rate.sleep()
+
